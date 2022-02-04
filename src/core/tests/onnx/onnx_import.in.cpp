@@ -3670,6 +3670,19 @@ NGRAPH_TEST(${BACKEND_NAME}, onnx_model_sub_v7_broadcast) {
     test_case.run();
 }
 
+NGRAPH_TEST(${BACKEND_NAME}, onnx_model_sub_uint8) {
+    const auto function =
+        onnx_import::import_onnx_model(file_util::path_join(SERIALIZED_ZOO, "onnx/sub_uint8.onnx"));
+
+    auto test_case = test::TestCase(function, s_device);
+    test_case.add_input<uint8_t>({37, 1, 1, 11});
+    test_case.add_input<uint8_t>({10});
+    test_case.add_expected_output<uint8_t>(Shape{2, 2},
+                                         {27, 0, 0, 1});
+
+    test_case.run();
+}
+
 NGRAPH_TEST(${BACKEND_NAME}, onnx_model_div_v6_broadcast_axis_1) {
     const auto function =
         onnx_import::import_onnx_model(file_util::path_join(SERIALIZED_ZOO, "onnx/div_v6_broadcast_axis_1.onnx"));
