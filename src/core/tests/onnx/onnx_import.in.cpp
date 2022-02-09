@@ -3675,11 +3675,9 @@ NGRAPH_TEST(${BACKEND_NAME}, onnx_model_div_uint8) {
         onnx_import::import_onnx_model(file_util::path_join(SERIALIZED_ZOO, "onnx/div_uint8.onnx"));
 
     auto test_case = test::TestCase(function, s_device);
-    test_case.add_input<uint8_t>({2, 0, 3, 2});
-    test_case.add_input<uint8_t>({2, 2, 4, 1});
-    test_case.add_expected_output<uint8_t>(Shape{2, 2},
-                                         {1, 0, 0, 2});
-
+    test_case.add_input<uint8_t>({12, 20, 6, 15});
+    test_case.add_input<uint8_t>({23,  3, 4, 11});
+    test_case.add_expected_output<uint8_t>(Shape{4}, {0, 6, 1, 1});
     test_case.run();
 }
 
@@ -3688,11 +3686,9 @@ NGRAPH_TEST(${BACKEND_NAME}, onnx_model_mul_uint8) {
         onnx_import::import_onnx_model(file_util::path_join(SERIALIZED_ZOO, "onnx/mul_uint8.onnx"));
 
     auto test_case = test::TestCase(function, s_device);
-    test_case.add_input<uint8_t>({1, 2, 3, 4});
-    test_case.add_input<uint8_t>({11});
-    test_case.add_expected_output<uint8_t>(Shape{2, 2},
-                                         {11, 22, 33, 44});
-
+    test_case.add_input<uint8_t>({22, 23, 22, 23});
+    test_case.add_input<uint8_t>({21, 17, 23, 13});
+    test_case.add_expected_output<uint8_t>(Shape{4}, {206, 135, 250, 43});
     test_case.run();
 }
 
@@ -3701,10 +3697,13 @@ NGRAPH_TEST(${BACKEND_NAME}, onnx_model_sub_uint8) {
         onnx_import::import_onnx_model(file_util::path_join(SERIALIZED_ZOO, "onnx/sub_uint8.onnx"));
 
     auto test_case = test::TestCase(function, s_device);
-    test_case.add_input<uint8_t>({37, 10, 10, 11});
-    test_case.add_input<uint8_t>({40});
-    test_case.add_expected_output<uint8_t>(Shape{2, 2},
-                                         {27, 0, 0, 1});
+    test_case.add_input<uint8_t>({37, 10, 10, 11,
+                                  37, 10, 10, 11});
+    test_case.add_input<uint8_t>({10, 10, 10, 10,
+                                  40, 40, 40, 40});
+    test_case.add_expected_output<uint8_t>(Shape{2, 4},
+                                         { 27,   0,   0,   1,
+                                          253, 226, 226, 227});
 
     test_case.run();
 }
